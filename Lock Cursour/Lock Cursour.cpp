@@ -22,13 +22,14 @@ void UnlockCursor() {
 }
 
 void CheckForInput()
-{// List of all KeyCodes: https://docs.microsoft.com/de-de/windows/win32/inputdev/virtual-key-codes
+{// List of all KeyCodes: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
     for (; ; Sleep(10)) {// 10ms
         if (Locked && ForegroundWindow != GetForegroundWindow())
             UnlockCursor(),
             Locked = false;
         if (GetKeyState(VK_CONTROL) & 0x8000 &&         // Control
             GetKeyState(VK_SHIFT) & 0x8000 &&           // Shift
+            GetKeyState(VK_MENU) & 0x8000 &&            // Alt
             GetKeyState('L') & 0x8000) {                // L
             if (Locked)
                 UnlockCursor(),
@@ -40,6 +41,7 @@ void CheckForInput()
             // Await until hotkey isnt pressed anymore
             for (; GetKeyState(VK_CONTROL) & 0x8000 &&  // Control
                 GetKeyState(VK_SHIFT) & 0x8000 &&       // Shift
+                GetKeyState(VK_MENU) & 0x8000 &&        // Alt
                 GetKeyState('L') & 0x8000; Sleep(10));  // L
         }
     }
