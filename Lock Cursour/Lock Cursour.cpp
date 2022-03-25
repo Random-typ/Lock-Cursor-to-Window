@@ -24,9 +24,15 @@ void UnlockCursor() {
 void CheckForInput()
 {// List of all KeyCodes: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
     for (; ; Sleep(10)) {// 10ms
-        if (Locked && ForegroundWindow != GetForegroundWindow())
-            UnlockCursor(),
+        if (Locked && ForegroundWindow != GetForegroundWindow()) {
             Locked = false;
+            for (size_t i = 0; i < 100; Sleep(1000), i++)
+                if (ForegroundWindow == GetForegroundWindow())
+                    LockCursor(ForegroundWindow),
+                    Locked = true;
+            if (!Locked)
+                UnlockCursor();
+        }
         if (GetKeyState(VK_CONTROL) & 0x8000 &&         // Control
             GetKeyState(VK_SHIFT) & 0x8000 &&           // Shift
             GetKeyState(VK_MENU) & 0x8000 &&            // Alt
